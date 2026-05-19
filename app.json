@@ -1,0 +1,364 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.fredhill.garage-gateway",
+  "version": "0.1.0",
+  "compatibility": ">=13.0.0",
+  "sdk": 3,
+  "runtime": "python",
+  "pythonVersion": "3.13",
+  "name": {
+    "en": "Garage Gateway"
+  },
+  "description": {
+    "en": "Control iSmartGate and GogoGate2 garage doors locally — no cloud required."
+  },
+  "tags": {
+    "en": [
+      "garage",
+      "garage door",
+      "ismartgate",
+      "gogogate",
+      "gogogate2",
+      "security",
+      "smart home"
+    ]
+  },
+  "category": [
+    "security"
+  ],
+  "brandColor": "#1F4E79",
+  "pythonPackages": [
+    "ismartgate>=5.0.0"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Fred Hill",
+    "email": "fredhill@mac.com"
+  },
+  "homepage": "https://github.com/fredhill/homey-garage-gateway",
+  "support": "https://github.com/fredhill/homey-garage-gateway/issues",
+  "source": "https://github.com/fredhill/homey-garage-gateway",
+  "flow": {
+    "triggers": [
+      {
+        "id": "door_opened",
+        "title": {
+          "en": "The garage door opened"
+        },
+        "titleFormatted": {
+          "en": "[[device]] opened"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which door?"
+            },
+            "filter": "driver_id=garage-door"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Door name"
+            },
+            "example": {
+              "en": "Garage Door"
+            }
+          }
+        ]
+      },
+      {
+        "id": "door_closed",
+        "title": {
+          "en": "The garage door closed"
+        },
+        "titleFormatted": {
+          "en": "[[device]] closed"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which door?"
+            },
+            "filter": "driver_id=garage-door"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Door name"
+            },
+            "example": {
+              "en": "Garage Door"
+            }
+          }
+        ]
+      },
+      {
+        "id": "door_left_open",
+        "title": {
+          "en": "The garage door was left open"
+        },
+        "titleFormatted": {
+          "en": "[[device]] was left open"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which door?"
+            },
+            "filter": "driver_id=garage-door"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Door name"
+            },
+            "example": {
+              "en": "Garage Door"
+            }
+          },
+          {
+            "name": "minutes_open",
+            "type": "number",
+            "title": {
+              "en": "Minutes open"
+            },
+            "example": {
+              "en": "20"
+            }
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "is_open",
+        "title": {
+          "en": "The garage door !{{is|is not}} open"
+        },
+        "titleFormatted": {
+          "en": "[[device]] !{{is|is not}} open"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=garage-door"
+          }
+        ]
+      },
+      {
+        "id": "is_closed",
+        "title": {
+          "en": "The garage door !{{is|is not}} closed"
+        },
+        "titleFormatted": {
+          "en": "[[device]] !{{is|is not}} closed"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=garage-door"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle_door",
+        "title": {
+          "en": "Toggle the garage door"
+        },
+        "titleFormatted": {
+          "en": "Toggle [[device]]"
+        },
+        "hint": {
+          "en": "Opens the door if it is closed, or closes it if it is open."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=garage-door"
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Garage Door"
+      },
+      "class": "garagedoor",
+      "capabilities": [
+        "garagedoor_closed"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "images": {
+        "small": "/drivers/garage-door/assets/images/small.png",
+        "large": "/drivers/garage-door/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "left_open_warning",
+          "type": "number",
+          "label": {
+            "en": "Left-open warning (minutes)"
+          },
+          "value": 20,
+          "min": 1,
+          "max": 240,
+          "hint": {
+            "en": "Fire the 'left open' trigger after the door has been open this long."
+          }
+        }
+      ],
+      "id": "garage-door"
+    },
+    {
+      "name": {
+        "en": "iSmartGate Hub"
+      },
+      "class": "other",
+      "capabilities": [
+        "alarm_connectivity"
+      ],
+      "capabilitiesOptions": {
+        "alarm_connectivity": {
+          "title": {
+            "en": "Connection Lost"
+          }
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "images": {
+        "small": "/drivers/garage-gateway/assets/images/small.png",
+        "large": "/drivers/garage-gateway/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Polling"
+          },
+          "children": [
+            {
+              "id": "poll_interval_open",
+              "type": "number",
+              "label": {
+                "en": "Poll interval — door open (seconds)"
+              },
+              "value": 15,
+              "min": 5,
+              "max": 120,
+              "hint": {
+                "en": "Faster polling while any door is open."
+              }
+            },
+            {
+              "id": "poll_interval_closed",
+              "type": "number",
+              "label": {
+                "en": "Poll interval — door closed (seconds)"
+              },
+              "value": 60,
+              "min": 15,
+              "max": 600,
+              "hint": {
+                "en": "Relaxed polling when all doors are closed."
+              }
+            }
+          ]
+        }
+      ],
+      "id": "garage-gateway"
+    }
+  ]
+}

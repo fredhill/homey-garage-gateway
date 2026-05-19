@@ -1,0 +1,6 @@
+{
+  "app": {
+    "name": "Garage Gateway",
+    "description": "Control iSmartGate and GogoGate2 garage doors locally — no cloud required."
+  }
+}

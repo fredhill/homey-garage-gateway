@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garage Gateway Settings</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #fff;
+      padding: 24px;
+      max-width: 480px;
+      color: #333;
+    }
+
+    h2 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #111;
+    }
+
+    .section-hint {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 28px 0;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+      padding: 9px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #111;
+      transition: border-color 0.15s;
+      width: 100%;
+      background: #fff;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #1F4E79;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    button {
+      padding: 10px 24px;
+      background: #1F4E79;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button:hover { background: #163A5A; }
+
+    #status {
+      display: none;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #1F4E79;
+    }
+
+    #error {
+      display: none;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>iSmartGate / GogoGate2 Connection</h2>
+  <div class="section-hint">
+    Enter the credentials for your hub. These are used during pairing,
+    then saved to Homey's encrypted device store. The password field is
+    cleared from this page once pairing succeeds.
+  </div>
+
+  <div class="field">
+    <label for="device_type">Device Type</label>
+    <select id="device_type">
+      <option value="ismartgate">iSmartGate (PRO / LITE / MINI)</option>
+      <option value="gogogate2">GogoGate2</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="ismartgate_host">Host</label>
+    <input type="text" id="ismartgate_host" placeholder="10.50.0.36 or fe56b595f1.isgaccess.com" autocomplete="off" />
+    <div class="hint">
+      Local IP (e.g. <code>10.50.0.36</code>), mDNS name (<code>ismartgate.local</code>),
+      or your UDI remote address (<code>&lt;udi&gt;.isgaccess.com</code>).
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="ismartgate_username">Username</label>
+    <input type="text" id="ismartgate_username" placeholder="admin" autocomplete="off" />
+    <div class="hint">Default is <code>admin</code>.</div>
+  </div>
+
+  <div class="field">
+    <label for="ismartgate_password">Password</label>
+    <input type="password" id="ismartgate_password" placeholder="Hub password" autocomplete="off" />
+    <div class="hint" id="password_status">
+      Required for pairing. Cleared from this page once the hub is added.
+    </div>
+  </div>
+
+  <button id="save-btn">Save</button>
+  <div id="status">&#10003; Settings saved — now add the hub from Devices &rarr; Add a Device.</div>
+  <div id="error"></div>
+
+  <script src="/homey.js" data-origin="settings"></script>
+  <script>
+    function onHomeyReady(Homey) {
+      Homey.ready();
+
+      var saveBtn  = document.getElementById('save-btn');
+      var statusEl = document.getElementById('status');
+      var errorEl  = document.getElementById('error');
+
+      // Security: password is write-only. We don't read it back into the DOM.
+      var readbackFields = ['device_type', 'ismartgate_host', 'ismartgate_username'];
+
+      readbackFields.forEach(function (key) {
+        Homey.get(key, function (err, value) {
+          if (!err && value !== null && value !== undefined) {
+            document.getElementById(key).value = value;
+          }
+        });
+      });
+
+      Homey.get('ismartgate_password', function (err, value) {
+        if (!err && value) {
+          var hint = document.getElementById('password_status');
+          if (hint) {
+            hint.innerHTML = '&#10003; Password is set (hidden). Paste a new one to replace it.';
+            hint.style.color = '#1F4E79';
+          }
+        }
+      });
+
+      saveBtn.addEventListener('click', function () {
+        statusEl.style.display = 'none';
+        errorEl.style.display  = 'none';
+
+        var device_type = document.getElementById('device_type').value;
+        var host        = document.getElementById('ismartgate_host').value.trim();
+        var username    = (document.getElementById('ismartgate_username').value || 'admin').trim();
+        var password    = document.getElementById('ismartgate_password').value;
+
+        if (!host) {
+          return showError('Please enter the iSmartGate host.');
+        }
+        if (password.length > 1024) {
+          return showError('Password is too long.');
+        }
+
+        var writePassword = password.length > 0;
+        var pending = writePassword ? 4 : 3;
+
+        function done() {
+          if (--pending === 0) {
+            document.getElementById('ismartgate_password').value = '';
+            statusEl.style.display = 'block';
+            setTimeout(function () { statusEl.style.display = 'none'; }, 4000);
+          }
+        }
+
+        Homey.set('device_type',         device_type, done);
+        Homey.set('ismartgate_host',     host,        done);
+        Homey.set('ismartgate_username', username,    done);
+        if (writePassword) {
+          Homey.set('ismartgate_password', password, done);
+        }
+      });
+
+      function showError(msg) {
+        errorEl.textContent   = msg;
+        errorEl.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>

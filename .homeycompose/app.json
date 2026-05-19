@@ -1,0 +1,43 @@
+{
+  "id": "com.fredhill.garage-gateway",
+  "version": "0.1.0",
+  "compatibility": ">=13.0.0",
+  "sdk": 3,
+  "runtime": "python",
+  "pythonVersion": "3.13",
+  "name": {
+    "en": "Garage Gateway"
+  },
+  "description": {
+    "en": "Control iSmartGate and GogoGate2 garage doors locally — no cloud required."
+  },
+  "tags": {
+    "en": [
+      "garage",
+      "garage door",
+      "ismartgate",
+      "gogogate",
+      "gogogate2",
+      "security",
+      "smart home"
+    ]
+  },
+  "category": ["security"],
+  "brandColor": "#1F4E79",
+  "pythonPackages": [
+    "ismartgate>=5.0.0"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Fred Hill",
+    "email": "fredhill@mac.com"
+  },
+  "homepage": "https://github.com/fredhill/homey-garage-gateway",
+  "support": "https://github.com/fredhill/homey-garage-gateway/issues",
+  "source": "https://github.com/fredhill/homey-garage-gateway"
+}

@@ -1,0 +1,34 @@
+# Local development virtual env
+.venv/
+venv/
+
+# Homey build artifacts
+.homeybuild/
+
+# Pre-compiled Python packages — rebuild with: npx homey app dependencies install
+python_packages/
+
+# Node — only used for the Homey CLI via npx
+node_modules/
+package-lock.json
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude Code local settings
+.claude/
+
+# Local-only secrets
+env.json
+.env
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editors
+.idea/
+.vscode/

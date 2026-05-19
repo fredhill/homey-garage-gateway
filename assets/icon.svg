@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Garage Gateway app icon: garage door silhouette -->
+  <!-- House outline -->
+  <path d="M14 44 L50 18 L86 44 L86 86 L14 86 Z" fill="#1F4E79"/>
+  <!-- Door frame -->
+  <rect x="26" y="50" width="48" height="34" fill="#0F2D4B"/>
+  <!-- Door panels (closed) -->
+  <line x1="26" y1="59" x2="74" y2="59" stroke="#1F4E79" stroke-width="2"/>
+  <line x1="26" y1="67" x2="74" y2="67" stroke="#1F4E79" stroke-width="2"/>
+  <line x1="26" y1="75" x2="74" y2="75" stroke="#1F4E79" stroke-width="2"/>
+  <!-- Door handle -->
+  <circle cx="68" cy="71" r="1.6" fill="#fff" opacity="0.85"/>
+</svg>

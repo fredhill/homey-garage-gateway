@@ -1,0 +1,116 @@
+{
+  "triggers": [
+    {
+      "id": "door_opened",
+      "title": { "en": "The garage door opened" },
+      "titleFormatted": { "en": "[[device]] opened" },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "placeholder": { "en": "Which door?" },
+          "filter": "driver_id=garage-door"
+        }
+      ],
+      "tokens": [
+        {
+          "name": "door_name",
+          "type": "string",
+          "title": { "en": "Door name" },
+          "example": { "en": "Garage Door" }
+        }
+      ]
+    },
+    {
+      "id": "door_closed",
+      "title": { "en": "The garage door closed" },
+      "titleFormatted": { "en": "[[device]] closed" },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "placeholder": { "en": "Which door?" },
+          "filter": "driver_id=garage-door"
+        }
+      ],
+      "tokens": [
+        {
+          "name": "door_name",
+          "type": "string",
+          "title": { "en": "Door name" },
+          "example": { "en": "Garage Door" }
+        }
+      ]
+    },
+    {
+      "id": "door_left_open",
+      "title": { "en": "The garage door was left open" },
+      "titleFormatted": { "en": "[[device]] was left open" },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "placeholder": { "en": "Which door?" },
+          "filter": "driver_id=garage-door"
+        }
+      ],
+      "tokens": [
+        {
+          "name": "door_name",
+          "type": "string",
+          "title": { "en": "Door name" },
+          "example": { "en": "Garage Door" }
+        },
+        {
+          "name": "minutes_open",
+          "type": "number",
+          "title": { "en": "Minutes open" },
+          "example": { "en": "20" }
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "is_open",
+      "title": { "en": "The garage door !{{is|is not}} open" },
+      "titleFormatted": { "en": "[[device]] !{{is|is not}} open" },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "filter": "driver_id=garage-door"
+        }
+      ]
+    },
+    {
+      "id": "is_closed",
+      "title": { "en": "The garage door !{{is|is not}} closed" },
+      "titleFormatted": { "en": "[[device]] !{{is|is not}} closed" },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "filter": "driver_id=garage-door"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "toggle_door",
+      "title": { "en": "Toggle the garage door" },
+      "titleFormatted": { "en": "Toggle [[device]]" },
+      "hint": {
+        "en": "Opens the door if it is closed, or closes it if it is open."
+      },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "filter": "driver_id=garage-door"
+        }
+      ]
+    }
+  ]
+}

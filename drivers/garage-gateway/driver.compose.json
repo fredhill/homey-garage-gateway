@@ -1,0 +1,55 @@
+{
+  "name": {
+    "en": "iSmartGate Hub"
+  },
+  "class": "other",
+  "capabilities": ["alarm_connectivity"],
+  "capabilitiesOptions": {
+    "alarm_connectivity": {
+      "title": { "en": "Connection Lost" }
+    }
+  },
+  "platforms": ["local"],
+  "connectivity": ["lan"],
+  "images": {
+    "small": "/drivers/garage-gateway/assets/images/small.png",
+    "large": "/drivers/garage-gateway/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": { "en": "Polling" },
+      "children": [
+        {
+          "id": "poll_interval_open",
+          "type": "number",
+          "label": { "en": "Poll interval — door open (seconds)" },
+          "value": 15,
+          "min": 5,
+          "max": 120,
+          "hint": { "en": "Faster polling while any door is open." }
+        },
+        {
+          "id": "poll_interval_closed",
+          "type": "number",
+          "label": { "en": "Poll interval — door closed (seconds)" },
+          "value": 60,
+          "min": 15,
+          "max": 600,
+          "hint": { "en": "Relaxed polling when all doors are closed." }
+        }
+      ]
+    }
+  ]
+}
