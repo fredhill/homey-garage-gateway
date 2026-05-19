@@ -54,7 +54,12 @@ class GarageGatewayDriver(driver.Driver):
                 "them in the Garage Gateway app settings and try again."
             )
         except Exception as exc:
-            self.log(f"Pairing: connection error: {exc!r}")
+            # Log exception class + message rather than repr — some httpx
+            # repr() output includes the full request URL with query string,
+            # which we never want repeated in app logs.
+            self.log(
+                f"Pairing: connection error: {type(exc).__name__}: {exc}"
+            )
             raise Exception(
                 f"Could not reach the device at '{host}'. Check the host "
                 f"address and that the device is on the same network."
@@ -77,7 +82,10 @@ class GarageGatewayDriver(driver.Driver):
             self.homey.settings.set("ismartgate_password", "")
             self.log("Pairing: cleared password from plain-text app settings")
         except Exception as exc:
-            self.log(f"Pairing: could not clear password from settings: {exc!r}")
+            self.log(
+                f"Pairing: could not clear password from settings: "
+                f"{type(exc).__name__}: {exc}"
+            )
 
         return [
             {

@@ -3,7 +3,18 @@
     "en": "Garage Door"
   },
   "class": "garagedoor",
-  "capabilities": ["garagedoor_closed"],
+  "capabilities": ["door_status", "garagedoor_closed"],
+  "capabilitiesOptions": {
+    "garagedoor_closed": {
+      "title": { "en": "Position" }
+    },
+    "measure_temperature": {
+      "title": { "en": "Garage Temperature" }
+    },
+    "measure_battery": {
+      "title": { "en": "Sensor Battery" }
+    }
+  },
   "platforms": ["local"],
   "connectivity": ["lan"],
   "images": {

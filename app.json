@@ -242,8 +242,26 @@
       },
       "class": "garagedoor",
       "capabilities": [
+        "door_status",
         "garagedoor_closed"
       ],
+      "capabilitiesOptions": {
+        "garagedoor_closed": {
+          "title": {
+            "en": "Position"
+          }
+        },
+        "measure_temperature": {
+          "title": {
+            "en": "Garage Temperature"
+          }
+        },
+        "measure_battery": {
+          "title": {
+            "en": "Sensor Battery"
+          }
+        }
+      },
       "platforms": [
         "local"
       ],
@@ -360,5 +378,49 @@
       ],
       "id": "garage-gateway"
     }
-  ]
+  ],
+  "capabilities": {
+    "door_status": {
+      "type": "enum",
+      "title": {
+        "en": "Status"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/door_status.svg",
+      "values": [
+        {
+          "id": "open",
+          "title": {
+            "en": "Open"
+          }
+        },
+        {
+          "id": "closed",
+          "title": {
+            "en": "Closed"
+          }
+        },
+        {
+          "id": "opening",
+          "title": {
+            "en": "Opening"
+          }
+        },
+        {
+          "id": "closing",
+          "title": {
+            "en": "Closing"
+          }
+        },
+        {
+          "id": "undefined",
+          "title": {
+            "en": "Unknown"
+          }
+        }
+      ]
+    }
+  }
 }

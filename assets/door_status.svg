@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+  <!-- Door status icon: a partially-open garage door -->
+  <path d="M3 4h18v2H3z"/>
+  <path d="M5 8h14v2H5z"/>
+  <path d="M5 12h14v2H5z"/>
+  <path d="M5 16h6v4H5z"/>
+</svg>

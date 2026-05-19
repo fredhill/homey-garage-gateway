@@ -116,7 +116,7 @@
 
   <div class="field">
     <label for="ismartgate_host">Host</label>
-    <input type="text" id="ismartgate_host" placeholder="10.50.0.36 or fe56b595f1.isgaccess.com" autocomplete="off" />
+    <input type="text" id="ismartgate_host" placeholder="10.50.0.36 or fe56b595f1.isgaccess.com" autocomplete="off" maxlength="253" />
     <div class="hint">
       Local IP (e.g. <code>10.50.0.36</code>), mDNS name (<code>ismartgate.local</code>),
       or your UDI remote address (<code>&lt;udi&gt;.isgaccess.com</code>).
@@ -125,13 +125,13 @@
 
   <div class="field">
     <label for="ismartgate_username">Username</label>
-    <input type="text" id="ismartgate_username" placeholder="admin" autocomplete="off" />
+    <input type="text" id="ismartgate_username" placeholder="admin" autocomplete="off" maxlength="64" />
     <div class="hint">Default is <code>admin</code>.</div>
   </div>
 
   <div class="field">
     <label for="ismartgate_password">Password</label>
-    <input type="password" id="ismartgate_password" placeholder="Hub password" autocomplete="off" />
+    <input type="password" id="ismartgate_password" placeholder="Hub password" autocomplete="off" maxlength="256" />
     <div class="hint" id="password_status">
       Required for pairing. Cleared from this page once the hub is added.
     </div>
@@ -180,11 +180,30 @@
         var username    = (document.getElementById('ismartgate_username').value || 'admin').trim();
         var password    = document.getElementById('ismartgate_password').value;
 
+        if (device_type !== 'ismartgate' && device_type !== 'gogogate2') {
+          return showError('Unsupported device type.');
+        }
         if (!host) {
           return showError('Please enter the iSmartGate host.');
         }
-        if (password.length > 1024) {
-          return showError('Password is too long.');
+        if (host.length > 253) {
+          return showError('Host is too long (max 253 characters).');
+        }
+        // Accept IPv4, IPv6 (literal in brackets), or DNS hostname (letters,
+        // digits, dots, hyphens). Reject anything with URL schemes, paths,
+        // query strings, or whitespace.
+        var hostPattern = /^(\[[0-9A-Fa-f:]+\]|[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?)*)$/;
+        if (!hostPattern.test(host)) {
+          return showError(
+            'Host must be an IP address (10.50.0.36), a hostname (ismartgate.local), ' +
+            'or a UDI domain (xxxxxx.isgaccess.com). No protocol or path.'
+          );
+        }
+        if (username.length > 64) {
+          return showError('Username is too long (max 64 characters).');
+        }
+        if (password.length > 256) {
+          return showError('Password is too long (max 256 characters).');
         }
 
         var writePassword = password.length > 0;
