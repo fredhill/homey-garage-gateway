@@ -117,11 +117,15 @@ class GarageDoorDevice(device.Device):
 
         status = entry.get("status", "undefined")
 
-        # Always reflect the raw status on the enum capability — even for
-        # transitional states. The boolean garagedoor_closed only flips on
-        # confirmed terminal states.
+        # The iSmartGate library reports the open state as "opened" but the
+        # door_status capability schema declares it as "open". Map at the
+        # write boundary — otherwise Homey silently rejects the value and
+        # the tile stays stuck on whatever it last accepted (typically
+        # "closed" from the initial post-pair poll), making the door look
+        # frozen even though the polling loop is updating correctly.
+        ui_status = "open" if status == "opened" else status
         try:
-            await self.set_capability_value("door_status", status)
+            await self.set_capability_value("door_status", ui_status)
         except Exception as exc:
             self.log(f"refresh: door_status error: {exc!r}")
 
