@@ -64,7 +64,7 @@ class GatewayDevice(device.Device):
         self.log(
             f"GatewayDevice initialising — type={self._device_type} host={self._host}"
         )
-        self._poll_task = asyncio.create_task(self._poll_loop())
+        self._poll_task = self._spawn(self._poll_loop())
 
     async def on_deleted(self):
         if self._poll_task and not self._poll_task.done():
@@ -112,7 +112,16 @@ class GatewayDevice(device.Device):
 
     async def _poll_loop(self) -> None:
         # Run one poll immediately so newly-paired hubs populate state fast.
-        await self._poll_once()
+        # Wrapped in the same safety net as the loop body — without this an
+        # exception on the first poll (e.g. SDK quirk inside set_unavailable)
+        # would kill the task before the loop's except handler ever ran.
+        # Lesson learned from com.fredhill.benq-projector v1.0.5.
+        try:
+            await self._poll_once()
+        except asyncio.CancelledError:
+            return
+        except Exception as exc:
+            self.log(f"Initial poll failed: {type(exc).__name__}: {exc}")
 
         while True:
             try:
@@ -122,7 +131,32 @@ class GatewayDevice(device.Device):
                 self.log("Poll loop cancelled")
                 return
             except Exception as exc:
-                self.log(f"Unhandled poll-loop error: {exc!r}")
+                self.log(f"Unhandled poll-loop error: {type(exc).__name__}: {exc}")
+
+    # ------------------------------------------------------------------
+    # Background-task safety net
+    # ------------------------------------------------------------------
+
+    def _spawn(self, coro) -> asyncio.Task:
+        """Fire-and-forget a coroutine with mandatory exception capture.
+
+        Wraps asyncio.create_task with add_done_callback so that any
+        exception raised by the coroutine is retrieved and logged,
+        never escaping into the asyncio event loop where Python would
+        surface it as 'Task exception was never retrieved' — which
+        crashed the BenQ Homey app in v1.0.3 and required v1.0.4 to fix.
+        """
+        task = asyncio.create_task(coro)
+        task.add_done_callback(self._on_task_done)
+        return task
+
+    def _on_task_done(self, task: asyncio.Task) -> None:
+        try:
+            task.result()
+        except asyncio.CancelledError:
+            pass
+        except Exception as exc:
+            self.log(f"Background task error: {type(exc).__name__}: {exc}")
 
     async def _poll_once(self) -> None:
         try:
@@ -214,7 +248,7 @@ class GatewayDevice(device.Device):
             door_driver = self.homey.drivers.get_driver("garage-door")
             for d in door_driver.get_devices():
                 if d.get_data().get("gateway_id") == self._gateway_id_cache:
-                    asyncio.create_task(d.refresh_from_state())
+                    self._spawn(d.refresh_from_state())
         except Exception as exc:
             self.log(f"Error notifying door devices: {type(exc).__name__}: {exc}")
 

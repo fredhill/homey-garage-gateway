@@ -95,11 +95,36 @@ class GarageDoorDevice(device.Device):
         )
 
         # Render initial state from whatever the hub already polled, if anything.
-        asyncio.create_task(self.refresh_from_state())
+        self._spawn(self.refresh_from_state())
 
     async def on_deleted(self):
         self._cancel_left_open_timer()
         self.log(f"GarageDoorDevice removed — door {self._door_id}")
+
+    # ------------------------------------------------------------------
+    # Background-task safety net
+    # ------------------------------------------------------------------
+
+    def _spawn(self, coro) -> asyncio.Task:
+        """Fire-and-forget a coroutine with mandatory exception capture.
+
+        Wraps asyncio.create_task with add_done_callback so that any
+        exception raised by the coroutine is retrieved and logged,
+        never escaping into the asyncio event loop where Python would
+        surface it as 'Task exception was never retrieved' — which
+        crashed the BenQ Homey app in v1.0.3 and required v1.0.4 to fix.
+        """
+        task = asyncio.create_task(coro)
+        task.add_done_callback(self._on_task_done)
+        return task
+
+    def _on_task_done(self, task: asyncio.Task) -> None:
+        try:
+            task.result()
+        except asyncio.CancelledError:
+            pass
+        except Exception as exc:
+            self.log(f"Background task error: {type(exc).__name__}: {exc}")
 
     # ------------------------------------------------------------------
     # State refresh (called by GatewayDevice after each poll)
@@ -149,11 +174,11 @@ class GarageDoorDevice(device.Device):
             # was_closed is None.
             if was_closed is not None and bool(was_closed) != bool(is_closed):
                 if is_closed:
-                    asyncio.create_task(self._fire_closed())
+                    self._spawn(self._fire_closed())
                     self._cancel_left_open_timer()
                     self._opened_at = None
                 else:
-                    asyncio.create_task(self._fire_opened())
+                    self._spawn(self._fire_opened())
                     self._opened_at = datetime.now(timezone.utc)
                     self._schedule_left_open_warning()
 
@@ -301,7 +326,7 @@ class GarageDoorDevice(device.Device):
         except (TypeError, ValueError):
             minutes = 20
         minutes = max(1, min(240, minutes))
-        self._left_open_task = asyncio.create_task(self._left_open_runner(minutes))
+        self._left_open_task = self._spawn(self._left_open_runner(minutes))
 
     async def _left_open_runner(self, minutes: int):
         try:

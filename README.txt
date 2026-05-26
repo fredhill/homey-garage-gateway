@@ -1,0 +1,3 @@
+Bring your iSmartGate or GogoGate2 garage door controller into Homey and automate it like any other smart device. Open, close, and monitor each door in real time, get notified when a door is left open, and trigger flows the moment a door opens or closes — all over your local network, no cloud round-trip required.
+
+Compatible with iSmartGate PRO (up to 3 doors), iSmartGate LITE, iSmartGate MINI, and the original GogoGate2 controller. Pair the hub once using its IP address, mDNS name, or UDI remote address, then add each configured door as its own device. Wireless tilt sensors automatically surface as temperature and battery capabilities; wired sensors just report Open or Closed.
