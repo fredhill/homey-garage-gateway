@@ -1,6 +1,6 @@
 {
   "id": "com.fredhill.garage-gateway",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "compatibility": ">=13.0.0",
   "sdk": 3,
   "runtime": "python",

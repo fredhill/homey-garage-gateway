@@ -1,0 +1,5 @@
+{
+  "1.0.0": {
+    "en": "Initial release. Local-network control of iSmartGate (PRO / LITE / MINI) and GogoGate2 garage doors. Real-time Open / Closed status, capability tile with Position toggle, automatic temperature and battery monitoring for wireless tilt sensors. Flow triggers for door opened, door closed, and door left open. Flow conditions for is open / is closed. Toggle action card."
+  }
+}
