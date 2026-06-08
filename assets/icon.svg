@@ -1,13 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Garage Gateway app icon: garage door silhouette -->
-  <!-- House outline -->
-  <path d="M14 44 L50 18 L86 44 L86 86 L14 86 Z" fill="#1F4E79"/>
-  <!-- Door frame -->
-  <rect x="26" y="50" width="48" height="34" fill="#0F2D4B"/>
-  <!-- Door panels (closed) -->
-  <line x1="26" y1="59" x2="74" y2="59" stroke="#1F4E79" stroke-width="2"/>
-  <line x1="26" y1="67" x2="74" y2="67" stroke="#1F4E79" stroke-width="2"/>
-  <line x1="26" y1="75" x2="74" y2="75" stroke="#1F4E79" stroke-width="2"/>
-  <!-- Door handle -->
-  <circle cx="68" cy="71" r="1.6" fill="#fff" opacity="0.85"/>
+  <!--
+    Garage Gateway app icon.
+    White silhouette of a house with the garage door rendered as negative
+    space — the door area is the brand color showing through, with thin
+    panel divider lines visible inside it. Reads as "a garage" instantly
+    at any size, matching the Homey App Store Guideline 1-5 expectation
+    of recognizable outline-style icons rather than filled images.
+  -->
+  <rect width="100" height="100" fill="#1F4E79"/>
+
+  <!-- House silhouette: pitched-roof bungalow -->
+  <path d="M14 44 L50 14 L86 44 L86 86 L14 86 Z" fill="#ffffff"/>
+
+  <!-- Garage door opening (negative space — brand color shows through) -->
+  <rect x="28" y="50" width="44" height="36" fill="#1F4E79"/>
+
+  <!-- Door frame outline so the cut-out reads as a door, not a hole -->
+  <rect x="28" y="50" width="44" height="36" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+
+  <!-- Panel divider lines inside the door (white on brand color) -->
+  <line x1="28" y1="59" x2="72" y2="59" stroke="#ffffff" stroke-width="1.2"/>
+  <line x1="28" y1="68" x2="72" y2="68" stroke="#ffffff" stroke-width="1.2"/>
+  <line x1="28" y1="77" x2="72" y2="77" stroke="#ffffff" stroke-width="1.2"/>
+
+  <!-- Door handle (small dot — tells the eye "this is a door") -->
+  <circle cx="64" cy="73" r="1.2" fill="#ffffff"/>
 </svg>

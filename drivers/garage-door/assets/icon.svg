@@ -1,18 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Garage door icon: panelled door with frame -->
-  <!-- Frame -->
-  <rect x="14" y="14" width="72" height="72" rx="3" ry="3" fill="#1F4E79"/>
-  <!-- Inner door area -->
-  <rect x="22" y="22" width="56" height="56" fill="#0F2D4B"/>
-  <!-- Horizontal panels -->
-  <rect x="22" y="22" width="56" height="12" fill="#1F4E79"/>
-  <rect x="22" y="36" width="56" height="12" fill="#1F4E79"/>
-  <rect x="22" y="50" width="56" height="12" fill="#1F4E79"/>
-  <rect x="22" y="64" width="56" height="12" fill="#1F4E79"/>
-  <!-- Window slots on the top panel -->
-  <rect x="30" y="26" width="8" height="4" fill="#fff" opacity="0.85"/>
-  <rect x="46" y="26" width="8" height="4" fill="#fff" opacity="0.85"/>
-  <rect x="62" y="26" width="8" height="4" fill="#fff" opacity="0.85"/>
-  <!-- Handle -->
-  <rect x="48" y="72" width="4" height="3" fill="#fff" opacity="0.9"/>
+  <!--
+    Garage Door driver icon.
+    White panelled garage door silhouette; the panel divider lines, the
+    row of small windows at the top, the handle, and the gap under the
+    door are all negative space (brand colour showing through). Reads
+    clearly as a residential overhead garage door at small sizes —
+    distinct from both the app icon and the hub icon.
+  -->
+  <rect width="100" height="100" fill="#1F4E79"/>
+
+  <!-- Door body — slightly inset from the canvas so it reads as a door, not a square -->
+  <rect x="18" y="14" width="64" height="68" rx="2" ry="2" fill="#ffffff"/>
+
+  <!-- Door floor / gap underneath (negative space — door is "lifted") -->
+  <rect x="14" y="82" width="72" height="4" fill="#1F4E79"/>
+
+  <!-- Panel divider lines (negative space) — four horizontal panels -->
+  <rect x="18" y="31" width="64" height="2" fill="#1F4E79"/>
+  <rect x="18" y="48" width="64" height="2" fill="#1F4E79"/>
+  <rect x="18" y="65" width="64" height="2" fill="#1F4E79"/>
+
+  <!-- Top-row windows (three small panes — negative space) -->
+  <rect x="26" y="20" width="10" height="6" rx="0.8" fill="#1F4E79"/>
+  <rect x="45" y="20" width="10" height="6" rx="0.8" fill="#1F4E79"/>
+  <rect x="64" y="20" width="10" height="6" rx="0.8" fill="#1F4E79"/>
+
+  <!-- Handle on the second panel from the bottom (negative space) -->
+  <rect x="48" y="73" width="4" height="3" rx="0.8" fill="#1F4E79"/>
 </svg>
