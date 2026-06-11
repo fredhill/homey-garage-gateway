@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.fredhill.garage-gateway",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "compatibility": ">=13.0.0",
   "sdk": 3,
   "runtime": "python",
@@ -162,6 +162,372 @@
             }
           }
         ]
+      },
+      {
+        "id": "door_opening",
+        "title": {
+          "en": "The garage door started opening"
+        },
+        "titleFormatted": {
+          "en": "[[device]] started opening"
+        },
+        "hint": {
+          "en": "Fires when an open command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which door?"
+            },
+            "filter": "driver_id=garage-door"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Door name"
+            },
+            "example": {
+              "en": "Garage Door"
+            }
+          }
+        ]
+      },
+      {
+        "id": "door_closing",
+        "title": {
+          "en": "The garage door started closing"
+        },
+        "titleFormatted": {
+          "en": "[[device]] started closing"
+        },
+        "hint": {
+          "en": "Fires when a close command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which door?"
+            },
+            "filter": "driver_id=garage-door"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Door name"
+            },
+            "example": {
+              "en": "Garage Door"
+            }
+          }
+        ]
+      },
+      {
+        "id": "door_status_changed",
+        "title": {
+          "en": "The garage door status changed"
+        },
+        "titleFormatted": {
+          "en": "[[device]] status changed"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-door"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which door?"
+            },
+            "filter": "driver_id=garage-door"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Door name"
+            },
+            "example": {
+              "en": "Garage Door"
+            }
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status"
+            },
+            "example": {
+              "en": "open"
+            }
+          }
+        ]
+      },
+      {
+        "id": "gate_opened",
+        "title": {
+          "en": "The gate opened"
+        },
+        "titleFormatted": {
+          "en": "[[device]] opened"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which gate?"
+            },
+            "filter": "driver_id=garage-gate"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Gate name"
+            },
+            "example": {
+              "en": "Driveway Gate"
+            }
+          }
+        ]
+      },
+      {
+        "id": "gate_closed",
+        "title": {
+          "en": "The gate closed"
+        },
+        "titleFormatted": {
+          "en": "[[device]] closed"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which gate?"
+            },
+            "filter": "driver_id=garage-gate"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Gate name"
+            },
+            "example": {
+              "en": "Driveway Gate"
+            }
+          }
+        ]
+      },
+      {
+        "id": "gate_left_open",
+        "title": {
+          "en": "The gate was left open"
+        },
+        "titleFormatted": {
+          "en": "[[device]] was left open"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which gate?"
+            },
+            "filter": "driver_id=garage-gate"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Gate name"
+            },
+            "example": {
+              "en": "Driveway Gate"
+            }
+          },
+          {
+            "name": "minutes_open",
+            "type": "number",
+            "title": {
+              "en": "Minutes open"
+            },
+            "example": {
+              "en": "20"
+            }
+          }
+        ]
+      },
+      {
+        "id": "gate_opening",
+        "title": {
+          "en": "The gate started opening"
+        },
+        "titleFormatted": {
+          "en": "[[device]] started opening"
+        },
+        "hint": {
+          "en": "Fires when an open command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which gate?"
+            },
+            "filter": "driver_id=garage-gate"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Gate name"
+            },
+            "example": {
+              "en": "Driveway Gate"
+            }
+          }
+        ]
+      },
+      {
+        "id": "gate_closing",
+        "title": {
+          "en": "The gate started closing"
+        },
+        "titleFormatted": {
+          "en": "[[device]] started closing"
+        },
+        "hint": {
+          "en": "Fires when a close command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which gate?"
+            },
+            "filter": "driver_id=garage-gate"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Gate name"
+            },
+            "example": {
+              "en": "Driveway Gate"
+            }
+          }
+        ]
+      },
+      {
+        "id": "gate_status_changed",
+        "title": {
+          "en": "The gate status changed"
+        },
+        "titleFormatted": {
+          "en": "[[device]] status changed"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "placeholder": {
+              "en": "Which gate?"
+            },
+            "filter": "driver_id=garage-gate"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "door_name",
+            "type": "string",
+            "title": {
+              "en": "Gate name"
+            },
+            "example": {
+              "en": "Driveway Gate"
+            }
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status"
+            },
+            "example": {
+              "en": "open"
+            }
+          }
+        ]
       }
     ],
     "conditions": [
@@ -206,6 +572,48 @@
             "filter": "driver_id=garage-door"
           }
         ]
+      },
+      {
+        "id": "gate_is_open",
+        "title": {
+          "en": "The gate !{{is|is not}} open"
+        },
+        "titleFormatted": {
+          "en": "[[device]] !{{is|is not}} open"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=garage-gate"
+          }
+        ]
+      },
+      {
+        "id": "gate_is_closed",
+        "title": {
+          "en": "The gate !{{is|is not}} closed"
+        },
+        "titleFormatted": {
+          "en": "[[device]] !{{is|is not}} closed"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=garage-gate"
+          }
+        ]
       }
     ],
     "actions": [
@@ -230,6 +638,54 @@
             "name": "device",
             "type": "device",
             "filter": "driver_id=garage-door"
+          }
+        ]
+      },
+      {
+        "id": "toggle_gate",
+        "title": {
+          "en": "Toggle the gate"
+        },
+        "titleFormatted": {
+          "en": "Toggle [[device]]"
+        },
+        "hint": {
+          "en": "Opens the gate if it is closed, or closes it if it is open. Sensor-backed gates only."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=garage-gate"
+          }
+        ]
+      },
+      {
+        "id": "pulse_gate",
+        "title": {
+          "en": "Pulse the gate"
+        },
+        "titleFormatted": {
+          "en": "Pulse [[device]]"
+        },
+        "hint": {
+          "en": "Sends a single activation pulse. Use for momentary/pulse gates that toggle on each press."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=garage-gate"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=garage-gate"
           }
         ]
       }
@@ -260,6 +716,11 @@
           "title": {
             "en": "Sensor Battery"
           }
+        },
+        "alarm_battery": {
+          "title": {
+            "en": "Low Sensor Battery"
+          }
         }
       },
       "platforms": [
@@ -268,6 +729,11 @@
       "connectivity": [
         "lan"
       ],
+      "energy": {
+        "batteries": [
+          "CR123A"
+        ]
+      },
       "images": {
         "small": "/drivers/garage-door/assets/images/small.png",
         "large": "/drivers/garage-door/assets/images/large.png"
@@ -301,6 +767,88 @@
         }
       ],
       "id": "garage-door"
+    },
+    {
+      "name": {
+        "en": "Gate"
+      },
+      "class": "garagedoor",
+      "capabilities": [
+        "door_status",
+        "garagedoor_closed"
+      ],
+      "capabilitiesOptions": {
+        "garagedoor_closed": {
+          "title": {
+            "en": "Position"
+          }
+        },
+        "button": {
+          "title": {
+            "en": "Pulse"
+          },
+          "maintenanceAction": false
+        },
+        "measure_temperature": {
+          "title": {
+            "en": "Gate Temperature"
+          }
+        },
+        "measure_battery": {
+          "title": {
+            "en": "Sensor Battery"
+          }
+        },
+        "alarm_battery": {
+          "title": {
+            "en": "Low Sensor Battery"
+          }
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "energy": {
+        "batteries": [
+          "CR123A"
+        ]
+      },
+      "images": {
+        "small": "/drivers/garage-gate/assets/images/small.png",
+        "large": "/drivers/garage-gate/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "left_open_warning",
+          "type": "number",
+          "label": {
+            "en": "Left-open warning (minutes)"
+          },
+          "value": 20,
+          "min": 1,
+          "max": 240,
+          "hint": {
+            "en": "Fire the 'left open' trigger after the gate has been open this long. Sensor-backed gates only."
+          }
+        }
+      ],
+      "id": "garage-gate"
     },
     {
       "name": {

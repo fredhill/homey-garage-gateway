@@ -106,6 +106,21 @@ class GatewayDevice(device.Device):
             )
         await self._api.async_close_door(int(door_id))
 
+    async def activate_door(self, door_id: int) -> None:
+        """Send a single raw pulse to an opening.
+
+        Used by momentary / pulse gates that have no position sensor, where
+        open vs close is meaningless — the hardware just toggles on each
+        activation. async_open_door / async_close_door would inspect a
+        (non-existent) sensor first; async_activate skips that and always
+        pulses.
+        """
+        if self._credentials_rejected:
+            raise Exception(
+                "Hub credentials are rejected — re-pair the hub before sending commands."
+            )
+        await self._api.async_activate(int(door_id))
+
     # ------------------------------------------------------------------
     # Polling
     # ------------------------------------------------------------------
@@ -243,12 +258,13 @@ class GatewayDevice(device.Device):
         return max(MIN_POLL_SECONDS, min(MAX_POLL_SECONDS, interval))
 
     async def _notify_door_devices(self) -> None:
-        """Ask every paired door device on this hub to refresh from app state."""
+        """Ask every paired door and gate device on this hub to refresh from app state."""
         try:
-            door_driver = self.homey.drivers.get_driver("garage-door")
-            for d in door_driver.get_devices():
-                if d.get_data().get("gateway_id") == self._gateway_id_cache:
-                    self._spawn(d.refresh_from_state())
+            for driver_id in ("garage-door", "garage-gate"):
+                drv = self.homey.drivers.get_driver(driver_id)
+                for d in (drv.get_devices() if drv else []):
+                    if d.get_data().get("gateway_id") == self._gateway_id_cache:
+                        self._spawn(d.refresh_from_state())
         except Exception as exc:
             self.log(f"Error notifying door devices: {type(exc).__name__}: {exc}")
 
@@ -256,6 +272,7 @@ class GatewayDevice(device.Device):
 def _door_snapshot(door) -> dict:
     """Plain-dict snapshot of an ISmartGateDoor for the shared app state."""
     status_val = getattr(door.status, "value", str(door.status))
+    mode_val = getattr(getattr(door, "mode", None), "value", None)
     return {
         "door_id":     int(door.door_id),
         "name":        door.name,
@@ -265,7 +282,13 @@ def _door_snapshot(door) -> dict:
         "temperature": door.temperature,
         "voltage":     door.voltage,
         "camera":      bool(getattr(door, "camera", False)),
-        "events":      int(getattr(door, "events", 0)),
+        # events is int | None in the library — and always None for
+        # GogoGate2 — so int() must not see None or every poll raises
+        # TypeError and the hub goes permanently unavailable.
+        "events":      int(getattr(door, "events", None) or 0),
+        "gate":        bool(getattr(door, "gate", False)),
+        "mode":        mode_val,  # 'garage' | 'pulse' | 'onoff' | None
+        "permission":  bool(getattr(door, "permission", True)),
     }
 
 

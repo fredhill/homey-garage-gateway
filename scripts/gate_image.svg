@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!--
+    Gate driver image (illustration).
+    A double swing driveway gate on a pure white background per App Store
+    Guideline 1.4. Dark powder-coated metal leaves with vertical bars,
+    an arched top rail and hinge posts. Rendered to large.png (500x500)
+    and small.png (75x75).
+  -->
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5A6066"/>
+      <stop offset="1" stop-color="#3A3F44"/>
+    </linearGradient>
+    <linearGradient id="post" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4A4F54"/>
+      <stop offset="0.5" stop-color="#6A7077"/>
+      <stop offset="1" stop-color="#3A3F44"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Pure white background (guideline 1.4) -->
+  <rect width="500" height="500" fill="#ffffff"/>
+
+  <!-- Soft ground shadow -->
+  <ellipse cx="250" cy="430" rx="180" ry="16" fill="#000000" opacity="0.08"/>
+
+  <!-- Hinge posts with caps -->
+  <g>
+    <rect x="60" y="150" width="26" height="262" rx="4" fill="url(#post)"/>
+    <rect x="414" y="150" width="26" height="262" rx="4" fill="url(#post)"/>
+    <rect x="54" y="138" width="38" height="16" rx="4" fill="#3A3F44"/>
+    <rect x="408" y="138" width="38" height="16" rx="4" fill="#3A3F44"/>
+  </g>
+
+  <!-- Two gate leaves. Each: arched frame, vertical bars, finials. -->
+  <!-- Left leaf: x 92..250 ; Right leaf: x 250..408 ; top arcs up toward centre -->
+  <g stroke="url(#metal)" fill="none" stroke-linecap="round">
+    <!-- Frames (top rail arches up to the centre meeting point) -->
+    <path d="M96 198 q78 -34 152 -6 L248 404 L96 404 Z" stroke-width="10"/>
+    <path d="M404 198 q-78 -34 -152 -6 L252 404 L404 404 Z" stroke-width="10"/>
+    <!-- Mid rails -->
+    <line x1="98" y1="320" x2="248" y2="320" stroke-width="7"/>
+    <line x1="252" y1="320" x2="402" y2="320" stroke-width="7"/>
+  </g>
+
+  <!-- Vertical bars with spear finials -->
+  <g stroke="url(#metal)" stroke-width="6" stroke-linecap="round">
+    <line x1="120" y1="196" x2="120" y2="404"/>
+    <line x1="148" y1="190" x2="148" y2="404"/>
+    <line x1="176" y1="186" x2="176" y2="404"/>
+    <line x1="204" y1="184" x2="204" y2="404"/>
+    <line x1="232" y1="184" x2="232" y2="404"/>
+    <line x1="268" y1="184" x2="268" y2="404"/>
+    <line x1="296" y1="184" x2="296" y2="404"/>
+    <line x1="324" y1="186" x2="324" y2="404"/>
+    <line x1="352" y1="190" x2="352" y2="404"/>
+    <line x1="380" y1="196" x2="380" y2="404"/>
+  </g>
+  <!-- Spear tips -->
+  <g fill="#3A3F44">
+    <polygon points="120,182 124,192 116,192"/>
+    <polygon points="148,176 152,186 144,186"/>
+    <polygon points="176,172 180,182 172,182"/>
+    <polygon points="204,170 208,180 200,180"/>
+    <polygon points="232,170 236,180 228,180"/>
+    <polygon points="268,170 272,180 264,180"/>
+    <polygon points="296,170 300,180 292,180"/>
+    <polygon points="324,172 328,182 320,182"/>
+    <polygon points="352,176 356,186 348,186"/>
+    <polygon points="380,182 384,192 376,192"/>
+  </g>
+
+  <!-- Centre latch hint -->
+  <rect x="246" y="300" width="8" height="40" rx="2" fill="#2E3338"/>
+</svg>

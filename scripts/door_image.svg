@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!--
+    Garage Door driver image (illustration).
+    A residential overhead garage door rendered on a pure white
+    background per App Store Guideline 1.4. Styled to match the real
+    device: tan/greige panelled door with a row of four windows across
+    the top and raised rectangular panels below. Source SVG; rendered to
+    large.png (500x500) and small.png (75x75).
+  -->
+  <defs>
+    <linearGradient id="door" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D9CDBA"/>
+      <stop offset="1" stop-color="#C4B59C"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E3D9C8"/>
+      <stop offset="1" stop-color="#CBBDA4"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C7D4DC"/>
+      <stop offset="0.5" stop-color="#9FB2BE"/>
+      <stop offset="1" stop-color="#B9C7D0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Pure white background (guideline 1.4) -->
+  <rect width="500" height="500" fill="#ffffff"/>
+
+  <!-- Soft ground shadow -->
+  <ellipse cx="250" cy="430" rx="170" ry="16" fill="#000000" opacity="0.08"/>
+
+  <!-- Door frame / casing -->
+  <rect x="78" y="74" width="344" height="346" rx="6" fill="#B3A488"/>
+  <!-- Door slab -->
+  <rect x="88" y="84" width="324" height="326" rx="4" fill="url(#door)"/>
+
+  <!-- Top window row: four panes with frames -->
+  <g>
+    <!-- frame band -->
+    <rect x="96" y="92" width="308" height="58" rx="3" fill="#BFB196"/>
+    <!-- panes -->
+    <g>
+      <rect x="104" y="100" width="68" height="42" rx="2" fill="url(#glass)"/>
+      <rect x="180" y="100" width="68" height="42" rx="2" fill="url(#glass)"/>
+      <rect x="256" y="100" width="68" height="42" rx="2" fill="url(#glass)"/>
+      <rect x="332" y="100" width="64" height="42" rx="2" fill="url(#glass)"/>
+    </g>
+    <!-- subtle glass highlight -->
+    <g opacity="0.35" fill="#ffffff">
+      <polygon points="104,142 126,100 150,100 112,142"/>
+      <polygon points="180,142 202,100 226,100 188,142"/>
+      <polygon points="256,142 278,100 302,100 264,142"/>
+      <polygon points="332,142 354,100 376,100 340,142"/>
+    </g>
+  </g>
+
+  <!-- Three rows x four columns of raised panels -->
+  <!--
+    Each panel: base rectangle (panel gradient) with a lighter top/left
+    bevel and a darker bottom/right bevel for a moulded look.
+  -->
+  <g>
+    <!-- row tops at y = 168, 250, 332 ; panel size 68w x 64h ; cols at x = 104,180,256,332 -->
+    <!-- We draw 12 panels via repeated groups -->
+
+    <!-- Row 1 -->
+    <g>
+      <rect x="104" y="168" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="180" y="168" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="256" y="168" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="332" y="168" width="64" height="64" rx="3" fill="url(#panel)"/>
+    </g>
+    <!-- Row 2 -->
+    <g>
+      <rect x="104" y="250" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="180" y="250" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="256" y="250" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="332" y="250" width="64" height="64" rx="3" fill="url(#panel)"/>
+    </g>
+    <!-- Row 3 -->
+    <g>
+      <rect x="104" y="332" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="180" y="332" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="256" y="332" width="68" height="64" rx="3" fill="url(#panel)"/>
+      <rect x="332" y="332" width="64" height="64" rx="3" fill="url(#panel)"/>
+    </g>
+
+    <!-- Bevel highlights (top/left) and shadows (bottom/right) for all panels -->
+    <g stroke-linecap="round" fill="none">
+      <!-- highlights -->
+      <g stroke="#F0E9DB" stroke-width="2" opacity="0.8">
+        <path d="M106 230 V170 H170"/><path d="M182 230 V170 H246"/><path d="M258 230 V170 H322"/><path d="M334 230 V170 H394"/>
+        <path d="M106 312 V252 H170"/><path d="M182 312 V252 H246"/><path d="M258 312 V252 H322"/><path d="M334 312 V252 H394"/>
+        <path d="M106 394 V334 H170"/><path d="M182 394 V334 H246"/><path d="M258 394 V334 H322"/><path d="M334 394 V334 H394"/>
+      </g>
+      <!-- shadows -->
+      <g stroke="#A6987C" stroke-width="2" opacity="0.7">
+        <path d="M170 170 V230 H106"/><path d="M246 170 V230 H182"/><path d="M322 170 V230 H258"/><path d="M394 170 V230 H334"/>
+        <path d="M170 252 V312 H106"/><path d="M246 252 V312 H182"/><path d="M322 252 V312 H258"/><path d="M394 252 V312 H334"/>
+        <path d="M170 334 V394 H106"/><path d="M246 334 V394 H182"/><path d="M322 334 V394 H258"/><path d="M394 334 V394 H334"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Lift handle near the bottom centre -->
+  <rect x="240" y="372" width="20" height="8" rx="2" fill="#8C7E64"/>
+</svg>

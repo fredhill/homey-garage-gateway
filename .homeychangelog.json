@@ -7,5 +7,8 @@
   },
   "1.0.2": {
     "en": "Icons reworked to meet App Store guideline 1.5: removed the solid background fill so the app and driver icons render as single-color silhouettes on a transparent background."
+  },
+  "1.0.3": {
+    "en": "Added Gate support, including momentary pulse gates with no position sensor. New flow cards: opening / closing and status-changed triggers, a low-battery alarm for wireless sensors, and a gate pulse action. Fixed a polling crash that made GogoGate2 hubs show as unavailable. Fixed an error that prevented a second door from loading. Refreshed the garage-door store image on a white background."
   }
 }

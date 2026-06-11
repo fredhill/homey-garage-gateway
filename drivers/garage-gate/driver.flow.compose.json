@@ -1,0 +1,116 @@
+{
+  "triggers": [
+    {
+      "id": "gate_opened",
+      "title": { "en": "The gate opened" },
+      "titleFormatted": { "en": "[[device]] opened" },
+      "args": [
+        { "name": "device", "type": "device", "placeholder": { "en": "Which gate?" }, "filter": "driver_id=garage-gate" }
+      ],
+      "tokens": [
+        { "name": "door_name", "type": "string", "title": { "en": "Gate name" }, "example": { "en": "Driveway Gate" } }
+      ]
+    },
+    {
+      "id": "gate_closed",
+      "title": { "en": "The gate closed" },
+      "titleFormatted": { "en": "[[device]] closed" },
+      "args": [
+        { "name": "device", "type": "device", "placeholder": { "en": "Which gate?" }, "filter": "driver_id=garage-gate" }
+      ],
+      "tokens": [
+        { "name": "door_name", "type": "string", "title": { "en": "Gate name" }, "example": { "en": "Driveway Gate" } }
+      ]
+    },
+    {
+      "id": "gate_left_open",
+      "title": { "en": "The gate was left open" },
+      "titleFormatted": { "en": "[[device]] was left open" },
+      "args": [
+        { "name": "device", "type": "device", "placeholder": { "en": "Which gate?" }, "filter": "driver_id=garage-gate" }
+      ],
+      "tokens": [
+        { "name": "door_name", "type": "string", "title": { "en": "Gate name" }, "example": { "en": "Driveway Gate" } },
+        { "name": "minutes_open", "type": "number", "title": { "en": "Minutes open" }, "example": { "en": "20" } }
+      ]
+    },
+    {
+      "id": "gate_opening",
+      "title": { "en": "The gate started opening" },
+      "titleFormatted": { "en": "[[device]] started opening" },
+      "hint": {
+        "en": "Fires when an open command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+      },
+      "args": [
+        { "name": "device", "type": "device", "placeholder": { "en": "Which gate?" }, "filter": "driver_id=garage-gate" }
+      ],
+      "tokens": [
+        { "name": "door_name", "type": "string", "title": { "en": "Gate name" }, "example": { "en": "Driveway Gate" } }
+      ]
+    },
+    {
+      "id": "gate_closing",
+      "title": { "en": "The gate started closing" },
+      "titleFormatted": { "en": "[[device]] started closing" },
+      "hint": {
+        "en": "Fires when a close command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+      },
+      "args": [
+        { "name": "device", "type": "device", "placeholder": { "en": "Which gate?" }, "filter": "driver_id=garage-gate" }
+      ],
+      "tokens": [
+        { "name": "door_name", "type": "string", "title": { "en": "Gate name" }, "example": { "en": "Driveway Gate" } }
+      ]
+    },
+    {
+      "id": "gate_status_changed",
+      "title": { "en": "The gate status changed" },
+      "titleFormatted": { "en": "[[device]] status changed" },
+      "args": [
+        { "name": "device", "type": "device", "placeholder": { "en": "Which gate?" }, "filter": "driver_id=garage-gate" }
+      ],
+      "tokens": [
+        { "name": "door_name", "type": "string", "title": { "en": "Gate name" }, "example": { "en": "Driveway Gate" } },
+        { "name": "status", "type": "string", "title": { "en": "Status" }, "example": { "en": "open" } }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "gate_is_open",
+      "title": { "en": "The gate !{{is|is not}} open" },
+      "titleFormatted": { "en": "[[device]] !{{is|is not}} open" },
+      "args": [
+        { "name": "device", "type": "device", "filter": "driver_id=garage-gate" }
+      ]
+    },
+    {
+      "id": "gate_is_closed",
+      "title": { "en": "The gate !{{is|is not}} closed" },
+      "titleFormatted": { "en": "[[device]] !{{is|is not}} closed" },
+      "args": [
+        { "name": "device", "type": "device", "filter": "driver_id=garage-gate" }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "toggle_gate",
+      "title": { "en": "Toggle the gate" },
+      "titleFormatted": { "en": "Toggle [[device]]" },
+      "hint": { "en": "Opens the gate if it is closed, or closes it if it is open. Sensor-backed gates only." },
+      "args": [
+        { "name": "device", "type": "device", "filter": "driver_id=garage-gate" }
+      ]
+    },
+    {
+      "id": "pulse_gate",
+      "title": { "en": "Pulse the gate" },
+      "titleFormatted": { "en": "Pulse [[device]]" },
+      "hint": { "en": "Sends a single activation pulse. Use for momentary/pulse gates that toggle on each press." },
+      "args": [
+        { "name": "device", "type": "device", "filter": "driver_id=garage-gate" }
+      ]
+    }
+  ]
+}

@@ -68,6 +68,81 @@
           "example": { "en": "20" }
         }
       ]
+    },
+    {
+      "id": "door_opening",
+      "title": { "en": "The garage door started opening" },
+      "titleFormatted": { "en": "[[device]] started opening" },
+      "hint": {
+        "en": "Fires when an open command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+      },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "placeholder": { "en": "Which door?" },
+          "filter": "driver_id=garage-door"
+        }
+      ],
+      "tokens": [
+        {
+          "name": "door_name",
+          "type": "string",
+          "title": { "en": "Door name" },
+          "example": { "en": "Garage Door" }
+        }
+      ]
+    },
+    {
+      "id": "door_closing",
+      "title": { "en": "The garage door started closing" },
+      "titleFormatted": { "en": "[[device]] started closing" },
+      "hint": {
+        "en": "Fires when a close command is sent. The hub only reports the final open/closed state, so this reflects app- and flow-initiated commands."
+      },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "placeholder": { "en": "Which door?" },
+          "filter": "driver_id=garage-door"
+        }
+      ],
+      "tokens": [
+        {
+          "name": "door_name",
+          "type": "string",
+          "title": { "en": "Door name" },
+          "example": { "en": "Garage Door" }
+        }
+      ]
+    },
+    {
+      "id": "door_status_changed",
+      "title": { "en": "The garage door status changed" },
+      "titleFormatted": { "en": "[[device]] status changed" },
+      "args": [
+        {
+          "name": "device",
+          "type": "device",
+          "placeholder": { "en": "Which door?" },
+          "filter": "driver_id=garage-door"
+        }
+      ],
+      "tokens": [
+        {
+          "name": "door_name",
+          "type": "string",
+          "title": { "en": "Door name" },
+          "example": { "en": "Garage Door" }
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "title": { "en": "Status" },
+          "example": { "en": "open" }
+        }
+      ]
     }
   ],
   "conditions": [

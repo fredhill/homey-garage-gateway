@@ -1,6 +1,6 @@
 {
   "name": {
-    "en": "Garage Door"
+    "en": "Gate"
   },
   "class": "garagedoor",
   "capabilities": ["door_status", "garagedoor_closed"],
@@ -8,8 +8,12 @@
     "garagedoor_closed": {
       "title": { "en": "Position" }
     },
+    "button": {
+      "title": { "en": "Pulse" },
+      "maintenanceAction": false
+    },
     "measure_temperature": {
-      "title": { "en": "Garage Temperature" }
+      "title": { "en": "Gate Temperature" }
     },
     "measure_battery": {
       "title": { "en": "Sensor Battery" }
@@ -24,8 +28,8 @@
     "batteries": ["CR123A"]
   },
   "images": {
-    "small": "/drivers/garage-door/assets/images/small.png",
-    "large": "/drivers/garage-door/assets/images/large.png"
+    "small": "/drivers/garage-gate/assets/images/small.png",
+    "large": "/drivers/garage-gate/assets/images/large.png"
   },
   "pair": [
     {
@@ -47,7 +51,7 @@
       "min": 1,
       "max": 240,
       "hint": {
-        "en": "Fire the 'left open' trigger after the door has been open this long."
+        "en": "Fire the 'left open' trigger after the gate has been open this long. Sensor-backed gates only."
       }
     }
   ]

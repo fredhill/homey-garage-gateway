@@ -13,7 +13,36 @@ class GarageDoorDriver(driver.Driver):
 
     async def on_init(self):
         await super().on_init()
+
+        # Flow-card run listeners are registered here, once, rather than per
+        # device — a card allows only one listener, so per-device
+        # registration crashes the second device with AlreadyExists. The SDK
+        # hydrates the card's "device" argument into the actual device
+        # instance, so each invocation acts on the door the flow selected.
+        self.homey.flow.get_action_card("toggle_door").register_run_listener(
+            self._on_toggle
+        )
+        self.homey.flow.get_condition_card("is_open").register_run_listener(
+            self._on_is_open
+        )
+        self.homey.flow.get_condition_card("is_closed").register_run_listener(
+            self._on_is_closed
+        )
+
         self.log("GarageDoorDriver ready")
+
+    async def _on_toggle(self, args, *extra, **kwargs):
+        device = _device_from_args(args)
+        if device is not None:
+            await device._cmd_toggle()
+
+    async def _on_is_open(self, args, *extra, **kwargs) -> bool:
+        device = _device_from_args(args)
+        return device is not None and not device._is_closed()
+
+    async def _on_is_closed(self, args, *extra, **kwargs) -> bool:
+        device = _device_from_args(args)
+        return device is not None and device._is_closed()
 
     async def on_pair_list_devices(self, view_data: dict) -> list:
         gateway_driver = self.homey.drivers.get_driver("garage-gateway")
@@ -45,6 +74,10 @@ class GarageDoorDriver(driver.Driver):
                 if (gw_id, door_id) in already_paired:
                     continue
 
+                # Openings the hub flags as gates belong to the Gate driver.
+                if getattr(door, "gate", False):
+                    continue
+
                 has_wireless = door.temperature is not None or door.voltage is not None
                 capabilities = ["garagedoor_closed"]
                 if has_wireless:
@@ -73,6 +106,18 @@ class GarageDoorDriver(driver.Driver):
             )
 
         return result
+
+
+def _device_from_args(args):
+    """Pull the hydrated device instance from a flow card's arguments.
+
+    The SDK deserialises the card's "device" argument into the actual
+    Device instance before the run listener is called.
+    """
+    try:
+        return args["device"]
+    except (TypeError, KeyError):
+        return getattr(args, "device", None)
 
 
 homey_export = GarageDoorDriver
