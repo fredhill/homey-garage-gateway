@@ -1,30 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <!--
     Garage Door driver icon.
-    White panelled garage door silhouette; the panel divider lines, the
-    row of small windows at the top, the handle, and the gap under the
-    door are all negative space (brand colour showing through). Reads
-    clearly as a residential overhead garage door at small sizes —
-    distinct from both the app icon and the hub icon.
+    Single-color panelled garage door silhouette on a transparent
+    background. The panel divider slits, the row of windows at the top
+    and the handle are true negative space cut out of the door body
+    with fill-rule evenodd. No background fill (Guideline 1-5).
   -->
-  <rect width="100" height="100" fill="#1F4E79"/>
-
-  <!-- Door body — slightly inset from the canvas so it reads as a door, not a square -->
-  <rect x="18" y="14" width="64" height="68" rx="2" ry="2" fill="#ffffff"/>
-
-  <!-- Door floor / gap underneath (negative space — door is "lifted") -->
-  <rect x="14" y="82" width="72" height="4" fill="#1F4E79"/>
-
-  <!-- Panel divider lines (negative space) — four horizontal panels -->
-  <rect x="18" y="31" width="64" height="2" fill="#1F4E79"/>
-  <rect x="18" y="48" width="64" height="2" fill="#1F4E79"/>
-  <rect x="18" y="65" width="64" height="2" fill="#1F4E79"/>
-
-  <!-- Top-row windows (three small panes — negative space) -->
-  <rect x="26" y="20" width="10" height="6" rx="0.8" fill="#1F4E79"/>
-  <rect x="45" y="20" width="10" height="6" rx="0.8" fill="#1F4E79"/>
-  <rect x="64" y="20" width="10" height="6" rx="0.8" fill="#1F4E79"/>
-
-  <!-- Handle on the second panel from the bottom (negative space) -->
-  <rect x="48" y="73" width="4" height="3" rx="0.8" fill="#1F4E79"/>
+  <path fill="#000000" fill-rule="evenodd" d="
+    M20 14 h60 a2 2 0 0 1 2 2 v64 a2 2 0 0 1 -2 2 h-60 a2 2 0 0 1 -2 -2 v-64 a2 2 0 0 1 2 -2 Z
+    M26 20 h10 v6 h-10 Z
+    M45 20 h10 v6 h-10 Z
+    M64 20 h10 v6 h-10 Z
+    M18 31 h64 v2 h-64 Z
+    M18 48 h64 v2 h-64 Z
+    M18 65 h64 v2 h-64 Z
+    M48 73 h4 v3 h-4 Z
+  "/>
 </svg>

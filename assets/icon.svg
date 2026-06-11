@@ -1,28 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <!--
     Garage Gateway app icon.
-    White silhouette of a house with the garage door rendered as negative
-    space — the door area is the brand color showing through, with thin
-    panel divider lines visible inside it. Reads as "a garage" instantly
-    at any size, matching the Homey App Store Guideline 1-5 expectation
-    of recognizable outline-style icons rather than filled images.
+    Single-color house silhouette on a transparent background, with the
+    garage door opening cut out as true negative space (fill-rule
+    evenodd) and the panel divider lines drawn inside the opening.
+    Homey renders icons in one color, so no background fill is used
+    (App Store Guideline 1-5).
   -->
-  <rect width="100" height="100" fill="#1F4E79"/>
+  <path fill="#000000" fill-rule="evenodd"
+        d="M14 44 L50 14 L86 44 L86 86 L14 86 Z M28 50 h44 v36 h-44 Z"/>
 
-  <!-- House silhouette: pitched-roof bungalow -->
-  <path d="M14 44 L50 14 L86 44 L86 86 L14 86 Z" fill="#ffffff"/>
+  <!-- Panel divider lines inside the door opening -->
+  <rect x="28" y="58" width="44" height="2" fill="#000000"/>
+  <rect x="28" y="67" width="44" height="2" fill="#000000"/>
+  <rect x="28" y="76" width="44" height="2" fill="#000000"/>
 
-  <!-- Garage door opening (negative space — brand color shows through) -->
-  <rect x="28" y="50" width="44" height="36" fill="#1F4E79"/>
-
-  <!-- Door frame outline so the cut-out reads as a door, not a hole -->
-  <rect x="28" y="50" width="44" height="36" fill="none" stroke="#ffffff" stroke-width="1.5"/>
-
-  <!-- Panel divider lines inside the door (white on brand color) -->
-  <line x1="28" y1="59" x2="72" y2="59" stroke="#ffffff" stroke-width="1.2"/>
-  <line x1="28" y1="68" x2="72" y2="68" stroke="#ffffff" stroke-width="1.2"/>
-  <line x1="28" y1="77" x2="72" y2="77" stroke="#ffffff" stroke-width="1.2"/>
-
-  <!-- Door handle (small dot — tells the eye "this is a door") -->
-  <circle cx="64" cy="73" r="1.2" fill="#ffffff"/>
+  <!-- Door handle -->
+  <circle cx="64" cy="72.5" r="1.5" fill="#000000"/>
 </svg>

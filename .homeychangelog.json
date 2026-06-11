@@ -4,5 +4,8 @@
   },
   "1.0.1": {
     "en": "Visual polish for App Store certification: redesigned app and driver icons in an outline / negative-space style for clearer recognition at small sizes, and added product photos for the hub and door driver images."
+  },
+  "1.0.2": {
+    "en": "Icons reworked to meet App Store guideline 1.5: removed the solid background fill so the app and driver icons render as single-color silhouettes on a transparent background."
   }
 }
