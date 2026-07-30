@@ -10,5 +10,8 @@
   },
   "1.0.3": {
     "en": "Added Gate support, including momentary pulse gates with no position sensor. New flow cards: opening / closing and status-changed triggers, a low-battery alarm for wireless sensors, and a gate pulse action. Fixed a polling crash that made GogoGate2 hubs show as unavailable. Fixed an error that prevented a second door from loading. Refreshed the garage-door store image on a white background."
+  },
+  "1.0.4": {
+    "en": "Much more accurate door status while the door is moving: it now correctly shows Opening and Closing during travel, and the Opened / Closed flow triggers fire at the real moment the door finishes — no more firing too early or lagging behind. GogoGate2 is now a fully supported device, with updated hub naming and product image."
   }
 }

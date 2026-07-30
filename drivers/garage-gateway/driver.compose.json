@@ -1,6 +1,6 @@
 {
   "name": {
-    "en": "iSmartGate Hub"
+    "en": "iSmartGate / GogoGate2 Hub"
   },
   "class": "other",
   "capabilities": ["alarm_connectivity"],

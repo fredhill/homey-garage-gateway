@@ -39,6 +39,11 @@ DEFAULT_POLL_CLOSED = 60
 MIN_POLL_SECONDS    = 5
 MAX_POLL_SECONDS    = 600
 
+# While a door is mid-travel (opening/closing) we poll fast so the
+# transitional status resolves to the real terminal state within a few
+# seconds instead of after a full open/closed interval.
+TRANSITION_POLL_SECONDS = 3
+
 
 class GatewayDevice(device.Device):
 
@@ -59,6 +64,11 @@ class GatewayDevice(device.Device):
         self._latest_doors: list = []
         self._poll_task: asyncio.Task | None = None
         self._gateway_id_cache: str = self.get_data()["id"]
+        # Set by a command to wake the poll loop for an immediate refresh,
+        # so the door starts showing opening/closing within ~1s of a tap.
+        self._poll_wake: asyncio.Event = asyncio.Event()
+        # True while any door reports a transitional (opening/closing) status.
+        self._any_transitional: bool = False
 
         # Logged once so the iSmartGate host isn't repeated on every poll.
         self.log(
@@ -98,6 +108,7 @@ class GatewayDevice(device.Device):
                 "Hub credentials are rejected — re-pair the hub before sending commands."
             )
         await self._api.async_open_door(int(door_id))
+        self._poll_wake.set()
 
     async def close_door(self, door_id: int) -> None:
         if self._credentials_rejected:
@@ -105,6 +116,7 @@ class GatewayDevice(device.Device):
                 "Hub credentials are rejected — re-pair the hub before sending commands."
             )
         await self._api.async_close_door(int(door_id))
+        self._poll_wake.set()
 
     async def activate_door(self, door_id: int) -> None:
         """Send a single raw pulse to an opening.
@@ -120,6 +132,7 @@ class GatewayDevice(device.Device):
                 "Hub credentials are rejected — re-pair the hub before sending commands."
             )
         await self._api.async_activate(int(door_id))
+        self._poll_wake.set()
 
     # ------------------------------------------------------------------
     # Polling
@@ -140,13 +153,23 @@ class GatewayDevice(device.Device):
 
         while True:
             try:
-                await asyncio.sleep(self._next_interval_seconds())
+                await self._wait_next_poll()
                 await self._poll_once()
             except asyncio.CancelledError:
                 self.log("Poll loop cancelled")
                 return
             except Exception as exc:
                 self.log(f"Unhandled poll-loop error: {type(exc).__name__}: {exc}")
+
+    async def _wait_next_poll(self) -> None:
+        """Sleep until the next poll, waking early if a command was sent."""
+        interval = self._next_interval_seconds()
+        try:
+            await asyncio.wait_for(self._poll_wake.wait(), timeout=interval)
+        except asyncio.TimeoutError:
+            pass
+        finally:
+            self._poll_wake.clear()
 
     # ------------------------------------------------------------------
     # Background-task safety net
@@ -220,11 +243,32 @@ class GatewayDevice(device.Device):
         doors = list(get_configured_doors(info))
         self._latest_doors = doors
 
-        # Write per-door snapshots into shared app state and notify each door device.
+        # Merge the ismartgate library's transitional status (opening/closing)
+        # over the raw tilt-sensor reading. A single tilt sensor only reports
+        # terminal opened/closed and lags during travel (it still reads the
+        # pre-travel state while the door moves). The library tracks the
+        # transition — set by our own open/close commands — and resolves it to
+        # opened/closed once the sensor reaches the target (or after its ~55s
+        # timeout). Falls back to the raw status if the call is unavailable.
+        try:
+            statuses = self._api._get_door_statuses(info)
+        except Exception as exc:
+            self.log(f"Poll: transitional status unavailable ({type(exc).__name__}); using raw")
+            statuses = {}
+
         gw_id = self._gateway_id_cache
         state = self.homey.app.door_state
+        any_transitional = False
         for door in doors:
-            state[(gw_id, int(door.door_id))] = _door_snapshot(door)
+            snap = _door_snapshot(door)
+            st = statuses.get(int(door.door_id))
+            if st is not None:
+                status_val = getattr(st, "value", str(st))
+                snap["status"] = status_val
+                if status_val in ("opening", "closing"):
+                    any_transitional = True
+            state[(gw_id, int(door.door_id))] = snap
+        self._any_transitional = any_transitional
 
         await self._notify_door_devices()
 
@@ -243,6 +287,11 @@ class GatewayDevice(device.Device):
 
         if self._consecutive_errors >= 2:
             return NETWORK_BACKOFF_SECONDS
+
+        # Poll fast while a door is mid-travel so opening/closing resolves to
+        # the real terminal state (and flows fire) within a few seconds.
+        if self._any_transitional:
+            return TRANSITION_POLL_SECONDS
 
         settings = self.get_settings()
         any_open = any(d.status in OPEN_DOOR_STATUSES for d in self._latest_doors)

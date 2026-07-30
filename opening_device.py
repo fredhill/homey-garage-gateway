@@ -18,13 +18,19 @@ snapshot into app.door_state[(gateway_id, door_id)] and calls
 refresh_from_state() on each paired opening, which updates capabilities
 and fires flow triggers.
 
-Behaviour layered on top of the original door logic:
+Behaviour:
+  - door_status / opening / closing: a single tilt sensor only reports
+    terminal opened/closed and lags during travel, so the hub layer feeds
+    us the ismartgate library's transitional status (opening/closing) —
+    tracked from our open/close commands and resolved to opened/closed
+    when the sensor reaches the target. We just render whatever status the
+    snapshot carries.
+  - garagedoor_closed + opened/closed triggers move ONLY on terminal
+    states, keyed off the last terminal status (not off garagedoor_closed,
+    which a command pre-sets), so the tile never blinks mid-travel and the
+    triggers fire at the real open/close moment.
   - status_changed trigger: fires whenever door_status changes, carrying
     the new status as a token.
-  - opening / closing triggers: the hub's info endpoint only reports
-    terminal opened/closed, so these fire optimistically when the app
-    sends an open/close command (and the tile shows the transitional
-    state until the next poll resolves it).
   - alarm_battery: set from the wireless sensor voltage so Homey's
     built-in low-battery flow card has something to read.
 """
@@ -88,6 +94,10 @@ class OpeningDeviceBase(device.Device):
         # Last UI status we reported; gates the status_changed trigger and
         # is seeded (not fired) on the first observation after pair/restart.
         self._last_ui_status: str | None = None
+        # Last terminal status (opened/closed) we saw. Drives the
+        # opened/closed triggers independently of garagedoor_closed, which a
+        # command pre-sets and so can't be trusted as the 'before' value.
+        self._last_terminal: str | None = None
 
         # Cache device trigger cards once (skip ids the subclass disabled).
         self._trig: dict = {}
@@ -181,12 +191,12 @@ class OpeningDeviceBase(device.Device):
         if status == "undefined":
             return
 
-        is_closed = (status == "closed")
-        was_closed = self.get_capability_value("garagedoor_closed")
-
-        # For transitional states (opening / closing), don't yet change
-        # garagedoor_closed — we only update on terminal open/closed.
+        # garagedoor_closed and the opened/closed triggers move ONLY on
+        # terminal states. During opening/closing we hold them, so a
+        # mid-travel sensor reading (which still shows the pre-travel state)
+        # can't blink the tile or fire a flow at the wrong moment.
         if status in ("opened", "closed"):
+            is_closed = (status == "closed")
             try:
                 await self.set_capability_value("garagedoor_closed", is_closed)
                 await self.set_available()
@@ -194,9 +204,12 @@ class OpeningDeviceBase(device.Device):
                 self.log(f"refresh: garagedoor_closed error: {exc!r}")
                 return
 
-            # Trigger on transitions only — skip the very first update where
-            # was_closed is None.
-            if was_closed is not None and bool(was_closed) != bool(is_closed):
+            # Fire opened/closed on the sensor transition, tracked via the
+            # terminal status. Seed silently on the first terminal reading
+            # after pair/restart so we don't fire on startup.
+            prev_terminal = self._last_terminal
+            self._last_terminal = status
+            if prev_terminal is not None and status != prev_terminal:
                 if is_closed:
                     self._spawn(self._fire_closed())
                     self._cancel_left_open_timer()
@@ -297,33 +310,18 @@ class OpeningDeviceBase(device.Device):
         hub = self._require_hub()
         await hub.open_door(self._door_id)
         self.log(f"Open command sent (door {self._door_id})")
-        await self._optimistic_transition("opening")
 
     async def _cmd_close(self):
         self._check_debounce()
         hub = self._require_hub()
         await hub.close_door(self._door_id)
         self.log(f"Close command sent (door {self._door_id})")
-        await self._optimistic_transition("closing")
 
     async def _cmd_toggle(self):
         if self._is_closed():
             await self._cmd_open()
         else:
             await self._cmd_close()
-
-    async def _optimistic_transition(self, ui_status: str) -> None:
-        """Reflect a transitional state after a successful command.
-
-        The hub's info endpoint only ever reports terminal opened/closed,
-        so opening/closing are surfaced here, on the command we just sent.
-        The next poll resolves the tile to the real terminal state.
-        """
-        try:
-            await self.set_capability_value("door_status", ui_status)
-        except Exception:
-            pass
-        self._note_status(ui_status)
 
     def _check_debounce(self) -> None:
         """Raise if a command arrived too soon after the previous one.
