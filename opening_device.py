@@ -365,7 +365,7 @@ class OpeningDeviceBase(device.Device):
         if card is None:
             return
         try:
-            await card.trigger(self, {"door_name": self.get_name()}, {})
+            await card.trigger(self, {"door_name": self.get_name()})
             self.log(f"Trigger fired: {self.TRIGGER_IDS.get(key)} ({self.get_name()})")
         except Exception as exc:
             self.log(f"Failed to fire {self.TRIGGER_IDS.get(key)}: {exc!r}")
@@ -376,7 +376,7 @@ class OpeningDeviceBase(device.Device):
             return
         try:
             await card.trigger(
-                self, {"door_name": self.get_name(), "status": status}, {}
+                self, {"door_name": self.get_name(), "status": status}
             )
             self.log(f"Trigger fired: status_changed={status} ({self.get_name()})")
         except Exception as exc:
@@ -390,7 +390,6 @@ class OpeningDeviceBase(device.Device):
             await card.trigger(
                 self,
                 {"door_name": self.get_name(), "minutes_open": minutes},
-                {},
             )
             self.log(f"Trigger fired: left_open ({self.get_name()}, {minutes}m)")
         except Exception as exc:

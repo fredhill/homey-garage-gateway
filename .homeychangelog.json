@@ -13,5 +13,8 @@
   },
   "1.0.4": {
     "en": "Much more accurate door status while the door is moving: it now correctly shows Opening and Closing during travel, and the Opened / Closed flow triggers fire at the real moment the door finishes — no more firing too early or lagging behind. GogoGate2 is now a fully supported device, with updated hub naming and product image."
+  },
+  "1.0.5": {
+    "en": "Fixed the app's own flow triggers (door/gate Opened, Closed, Left-open, Opening, Closing and Status-changed), which were not firing at all — any flow built on those cards now runs correctly, at the real moment the door finishes moving. This release also carries the accurate during-travel status and GogoGate2 support from the previous update."
   }
 }
