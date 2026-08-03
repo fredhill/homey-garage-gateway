@@ -16,5 +16,8 @@
   },
   "1.0.5": {
     "en": "Fixed the app's own flow triggers (door/gate Opened, Closed, Left-open, Opening, Closing and Status-changed), which were not firing at all — any flow built on those cards now runs correctly, at the real moment the door finishes moving. This release also carries the accurate during-travel status and GogoGate2 support from the previous update."
+  },
+  "1.0.6": {
+    "en": "The app's own flow triggers (Opened, Closed, Left-open, Opening, Closing and Status-changed, for both doors and gates) now fire correctly — an internal issue had been silently blocking them, so flows built on these cards can finally react to the door finishing its open/close. Also includes the accurate during-travel status and GogoGate2 support from recent updates."
   }
 }

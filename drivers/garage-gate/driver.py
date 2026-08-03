@@ -37,7 +37,21 @@ class GarageGateDriver(driver.Driver):
             self._on_is_closed
         )
 
+        # Device trigger cards need a run listener too (see GarageDoorDriver):
+        # without one the SDK's _run raises NotFound and silently blocks the
+        # flow. Homey already matches the triggered device, so we approve.
+        for trigger_id in (
+            "gate_opened", "gate_closed", "gate_left_open",
+            "gate_opening", "gate_closing", "gate_status_changed",
+        ):
+            self.homey.flow.get_device_trigger_card(trigger_id).register_run_listener(
+                self._on_trigger_run
+            )
+
         self.log("GarageGateDriver ready")
+
+    async def _on_trigger_run(self, args, *extra, **kwargs) -> bool:
+        return True
 
     async def _on_toggle(self, args, *extra, **kwargs):
         device = _device_from_args(args)
