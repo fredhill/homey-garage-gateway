@@ -1,6 +1,6 @@
 {
   "id": "com.fredhill.garage-gateway",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "compatibility": ">=13.0.0",
   "sdk": 3,
   "runtime": "python",
@@ -9,12 +9,13 @@
     "en": "Garage Gateway"
   },
   "description": {
-    "en": "Control iSmartGate and GogoGate2 garage doors locally — no cloud required."
+    "en": "Control iSmartGate and GogoGate2 garage doors and gates locally — no cloud required. Supports multiple hubs."
   },
   "tags": {
     "en": [
       "garage",
       "garage door",
+      "gate",
       "ismartgate",
       "gogogate",
       "gogogate2",

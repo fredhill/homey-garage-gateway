@@ -19,5 +19,8 @@
   },
   "1.0.6": {
     "en": "The app's own flow triggers (Opened, Closed, Left-open, Opening, Closing and Status-changed, for both doors and gates) now fire correctly — an internal issue had been silently blocking them, so flows built on these cards can finally react to the door finishing its open/close. Also includes the accurate during-travel status and GogoGate2 support from recent updates."
+  },
+  "1.0.7": {
+    "en": "Flow triggers now fire correctly: the Opened, Closed, Left-open, Opening, Closing and Status-changed cards for doors and gates run at the real moment the door finishes moving — previously they were silently blocked and never fired at all. Door status is also far more accurate while the door is in motion, correctly showing Opening and Closing during travel. GogoGate2 is now a fully supported device. And if you have more than one iSmartGate or GogoGate2, you can add multiple hubs — with more than one paired, doors and gates are labelled with their hub name so they are easy to tell apart."
   }
 }

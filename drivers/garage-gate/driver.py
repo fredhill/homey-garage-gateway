@@ -95,9 +95,15 @@ class GarageGateDriver(driver.Driver):
             if gid and did is not None:
                 already_paired.add((gid, int(did)))
 
+        # With more than one hub paired, prefix each gate with its hub name so
+        # identically-named gates on different hubs stay distinguishable in the
+        # pair list (see GarageDoorDriver).
+        multi_hub = len(hubs) > 1
+
         result = []
         for hub in hubs:
             gw_id = hub.get_data()["id"]
+            hub_name = hub.get_name()
             doors = hub.latest_doors()
             if not doors:
                 self.log(f"Hub {gw_id} has no recent poll snapshot — pair the hub first")
@@ -124,6 +130,8 @@ class GarageGateDriver(driver.Driver):
                         capabilities += ["measure_temperature", "measure_battery", "alarm_battery"]
 
                 display_name = door.name or f"Gate {door_id}"
+                if multi_hub and hub_name:
+                    display_name = f"{hub_name} - {display_name}"
 
                 result.append({
                     "name": display_name,
