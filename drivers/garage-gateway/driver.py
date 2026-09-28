@@ -15,12 +15,16 @@ Most users only have one hub, so the pair flow is just list_devices +
 add_devices — matching the Fing app's pattern.
 """
 
+import re
+
 from ismartgate import (
     CredentialsIncorrectException,
     GogoGate2Api,
     ISmartGateApi,
 )
 from homey import driver
+
+_BARE_UDI_RE = re.compile(r"^[0-9a-fA-F]{8,10}$")
 
 
 class GarageGatewayDriver(driver.Driver):
@@ -60,10 +64,7 @@ class GarageGatewayDriver(driver.Driver):
             self.log(
                 f"Pairing: connection error: {type(exc).__name__}: {exc}"
             )
-            raise Exception(
-                f"Could not reach the device at '{host}'. Check the host "
-                f"address and that the device is on the same network."
-            )
+            raise Exception(_pairing_error_message(host, exc))
 
         hub_name = getattr(info, "ismartgatename", None) or "iSmartGate Hub"
         model    = getattr(info, "model", "ismartgate")
@@ -79,7 +80,7 @@ class GarageGatewayDriver(driver.Driver):
         # Once pairing confirms the credentials, clear the plain-text copy
         # from app settings — they live in the encrypted device store from now on.
         try:
-            self.homey.settings.set("ismartgate_password", "")
+            await self.homey.settings.set("ismartgate_password", "")
             self.log("Pairing: cleared password from plain-text app settings")
         except Exception as exc:
             self.log(
@@ -103,6 +104,58 @@ class GarageGatewayDriver(driver.Driver):
                 "settings": {},
             }
         ]
+
+
+def _classify_pairing_error(exc: Exception) -> str:
+    # Walk the __cause__/__context__ chain so we can classify the underlying
+    # socket/OSError even when httpx has wrapped it in its own ConnectError.
+    chain = []
+    step = exc
+    while step is not None and step not in chain:
+        chain.append(step)
+        step = step.__cause__ or step.__context__
+
+    for step in chain:
+        if isinstance(step, OSError) and step.errno == -2:  # EAI_NONAME
+            return "dns"
+
+    text = " ".join(str(step) for step in chain)
+    if "Name or service not known" in text or "nodename nor servname" in text:
+        return "dns"
+    if "All connection attempts failed" in text or "Connection refused" in text:
+        return "connection"
+    return "other"
+
+
+def _pairing_error_message(host: str, exc: Exception) -> str:
+    kind = _classify_pairing_error(exc)
+
+    if kind == "dns":
+        if _BARE_UDI_RE.match(host):
+            return (
+                f"Could not resolve '{host}' on the network. This looks like "
+                f"just the device ID — try the full remote-access address "
+                f"(e.g. '{host}.isgaccess.com') or the device's LAN IP address "
+                f"instead."
+            )
+        return (
+            f"Could not resolve '{host}' on the network. Double-check it's "
+            f"spelled exactly right (e.g. '.isgaccess.com', not "
+            f"'.isgacces.com'), or try the device's LAN IP address instead."
+        )
+
+    if kind == "connection":
+        return (
+            f"Could not connect to '{host}'. The address resolved, but the "
+            f"device didn't answer — check that you have the right LAN IP, "
+            f"that the device is powered on, and that it's on the same "
+            f"network as Homey (not blocked by a firewall or VLAN)."
+        )
+
+    return (
+        f"Could not reach the device at '{host}'. Check the host address "
+        f"and that the device is on the same network."
+    )
 
 
 def _udi_from_remote(remoteaccess) -> str | None:
